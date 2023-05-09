@@ -5,11 +5,9 @@ type Props = {
 
 const Home : React.FC<Props> = props => {
   return (
-    <html>
-      <body>
+    <div>
         <h1>Hello World</h1>
-      </body>
-    </html>
+    </div>
   )
 }
 
