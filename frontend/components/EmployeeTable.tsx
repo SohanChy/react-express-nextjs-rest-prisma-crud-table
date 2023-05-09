@@ -20,15 +20,19 @@ const EmployeeTable: React.FC<{employeeList: EmployeeProps[]}> = ({ employeeList
         </tr>
       </thead>
       <tbody>
+        {employeeList.map((employee)=>(
         <tr>
-          <th scope="row">John</th>
-          <td>Smith</td>
-          <td>5000$</td>
-          <td>5000$</td>
-        </tr>
+          <td>{employee.firstName}</td>
+          <td>{employee.lastName}</td>
+          <td>${employee.salary}</td>
+          <td></td>
+        </tr>        
+        ))}
        </tbody>
     </table>
   )
 }
 
-export default EmployeeTable;
+
+
+export default EmployeeTable
