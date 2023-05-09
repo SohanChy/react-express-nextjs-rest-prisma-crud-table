@@ -1,13 +1,17 @@
 import React from 'react'
+import Layout from '../components/Layout'
+import EmployeeTable from '../components/EmployeeTable'
 type Props = {
   
 }
 
 const Home : React.FC<Props> = props => {
   return (
-    <div>
-        <h1>Hello World</h1>
-    </div>
+    <Layout>
+      <div>
+          <EmployeeTable employeeList={[]} />
+      </div>
+    </Layout>
   )
 }
 
