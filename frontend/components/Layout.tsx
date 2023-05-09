@@ -3,7 +3,7 @@ import Header from './Header'
 
 
 type Props = {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const Layout: React.FC<Props> = ( props ) => (
@@ -47,6 +47,6 @@ const Layout: React.FC<Props> = ( props ) => (
       }
     `}</style>
   </div>
-)
+);
 
-export default Layout
+export default Layout;
