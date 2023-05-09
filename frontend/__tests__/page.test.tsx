@@ -1,7 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import Home from '../pages/index';
 import '@testing-library/jest-dom';
- 
+import mockRouter from 'next-router-mock';
+
+jest.mock('next/router', () => require('next-router-mock'));
+
 describe('Core Requirements - Read', () => {
 
   it('should display a heading and a employees table', () => {
