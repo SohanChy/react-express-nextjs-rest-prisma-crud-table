@@ -4,7 +4,6 @@ import EmployeeTable, { EmployeeProps } from '../components/EmployeeTable'
 import { GetServerSideProps } from 'next'
 
 type Props = {
-  employeeList: EmployeeProps[]
 }
 
 // Need to bring this from server later

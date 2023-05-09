@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { queryByLabelText, render, screen } from '@testing-library/react';
 import Home from '../pages/index';
 import '@testing-library/jest-dom';
 import mockRouter from 'next-router-mock';
@@ -7,15 +7,20 @@ import EmployeeTable from '../components/EmployeeTable';
 
 jest.mock('next/router', () => require('next-router-mock'));
 
-describe('Core Requirements - Read', () => {
+const mockEmployeeList = [
+  {  id: 1,
+    firstName: "John",
+    lastName: "Smith",
+    salary: 5400,
+  },
+  {  id: 2,
+    firstName: "Jenna",
+    lastName: "Smith",
+    salary: 1400,
+  }
+];
 
-  const mockEmployeeList = [
-    {  id: 1,
-      firstName: "John",
-      lastName: "Smith",
-      salary: 5400,
-    }
-  ];
+describe('Core Requirements - Read', () => {
 
   it('should display a heading and a employees table', () => {
     const { getByRole } = render(<Home />);
@@ -47,11 +52,24 @@ describe('Core Requirements - Read', () => {
   });
 
   it('Elements of Table column Salary should have $ sign.', () => {
-    throw new Error();
-  });
 
-  it('Elements of Table column Salary should have $ sign.', () => {
-    throw new Error();
+    const { getAllByRole } = render(<EmployeeTable employeeList={mockEmployeeList} />);
+    const tableRows = getAllByRole('row');
+    expect(tableRows.length).toBeGreaterThan(1);
+
+    const cells = getAllByRole('cell');
+
+    // count total $ signs in all cells
+    let count = 0;
+    for (const cell of cells) {
+      if (cell.textContent?.includes('$')) {
+        count++;
+      }
+    }
+
+    // There  should be only same amount of $ signs as rows
+    expect(count).toEqual(mockEmployeeList.length);
+
   });
 
 });
@@ -59,7 +77,14 @@ describe('Core Requirements - Read', () => {
 describe('Core Requirements - Edit', () => {
 
   it('The table rows should have an Edit button', () => {
-    throw new Error();
+    const { getAllByRole } = render(<EmployeeTable employeeList={mockEmployeeList} />);
+
+    const rows = getAllByRole('row');
+
+    // first row is header, so skip it by slicing
+    for (const row of rows.slice(1)) {
+      expect(row.textContent).toContain('Edit');
+    }
   });
 
   it('Edit button should show an option to edit the specific row', () => {
@@ -76,10 +101,17 @@ describe('Core Requirements - Edit', () => {
 
 });
 
-describe('Core Requirements - Edit', () => {
+describe('Core Requirements - Delete', () => {
 
   it('The table rows should have an Delete button', () => {
-    throw new Error();
+    const { getAllByRole } = render(<EmployeeTable employeeList={mockEmployeeList} />);
+
+    const rows = getAllByRole('row');
+
+    // first row is header, so skip it by slicing
+    for (const row of rows.slice(1)) {
+      expect(row.textContent).toContain('Delete');
+    }
   });
 
   it('Delete button should ask confirmation with yes no.', () => {

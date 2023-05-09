@@ -21,11 +21,12 @@ const EmployeeTable: React.FC<{employeeList: EmployeeProps[]}> = ({ employeeList
       </thead>
       <tbody>
         {employeeList.map((employee)=>(
-        <tr>
+        <tr key={employee.id}>
           <td>{employee.firstName}</td>
           <td>{employee.lastName}</td>
           <td>${employee.salary}</td>
-          <td></td>
+          <td><button type="button" className="btn btn-light">Edit</button> <button type="button" className="btn btn-danger">Delete</button></td>
+          
         </tr>        
         ))}
        </tbody>
