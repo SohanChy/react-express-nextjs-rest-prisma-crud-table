@@ -7,6 +7,9 @@ type State = {
   
 export const EmployeeTableReducer = (state: State, action: Action): State => {
     switch (action.type) {
+      case ActionType.Get:
+        return {...state, employeeList: action.payload};
+
       case ActionType.Create:
         return {...state, employeeList: [...state.employeeList, action.payload]};
 

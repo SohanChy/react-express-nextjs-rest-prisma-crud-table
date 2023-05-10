@@ -23,7 +23,7 @@ const mockEmployeeList = [
 describe('Core Requirements - Read', () => {
 
   it('should display a heading and a employees table', () => {
-    const { getByRole } = render(<Home />);
+    const { getByRole } = render(<Home employeeList={mockEmployeeList} />);
 
     const headingElement = getByRole('heading', { name: /employees/i });
     expect(headingElement).toBeInTheDocument();
@@ -34,7 +34,7 @@ describe('Core Requirements - Read', () => {
   });
 
   it('The table should have four columns, with headings First name, last name, and salary', () => {
-    const { getByRole, getAllByRole } = render(<EmployeeTable employeeList={mockEmployeeList} />);
+    const { getByRole, getAllByRole } = render(<EmployeeTable initialEmployeeList={mockEmployeeList}/>);
     const tableElement = getByRole('table');
     expect(tableElement).toBeInTheDocument();
 
@@ -53,7 +53,7 @@ describe('Core Requirements - Read', () => {
 
   it('Elements of Table column Salary should have $ sign.', () => {
 
-    const { getAllByRole } = render(<EmployeeTable employeeList={mockEmployeeList} />);
+    const { getAllByRole } = render(<EmployeeTable initialEmployeeList={mockEmployeeList}/>);
     const tableRows = getAllByRole('row');
     expect(tableRows.length).toBeGreaterThan(1);
 
@@ -77,7 +77,7 @@ describe('Core Requirements - Read', () => {
 describe('Core Requirements - Edit', () => {
 
   it('The table rows should have an Edit button', () => {
-    const { getAllByRole } = render(<EmployeeTable employeeList={mockEmployeeList} />);
+    const { getAllByRole } = render(<EmployeeTable initialEmployeeList={mockEmployeeList} />);
 
     const rows = getAllByRole('row');
 
@@ -104,7 +104,7 @@ describe('Core Requirements - Edit', () => {
 describe('Core Requirements - Delete', () => {
 
   it('The table rows should have an Delete button', () => {
-    const { getAllByRole } = render(<EmployeeTable employeeList={mockEmployeeList} />);
+    const { getAllByRole } = render(<EmployeeTable initialEmployeeList={mockEmployeeList} />);
 
     const rows = getAllByRole('row');
 

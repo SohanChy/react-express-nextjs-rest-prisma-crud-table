@@ -1,11 +1,16 @@
 import { Employee } from "../../components/EmployeeRow";
 
 export enum ActionType {
+    Get    = 'GET',
     Update = 'UPDATE',
     Delete = 'DELETE',
     Create = 'CREATE',
   }
 
+interface GetAction {
+    type: ActionType.Get;
+    payload: Employee[];
+}
 interface CreateAction {
     type: ActionType.Create;
     payload: Employee;
@@ -21,5 +26,5 @@ interface DeleteAction {
     payload: Employee;
 }
 
-export type Action = UpdateAction | DeleteAction | CreateAction;
+export type Action = UpdateAction | DeleteAction | CreateAction | GetAction;
 

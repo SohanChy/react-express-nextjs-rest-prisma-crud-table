@@ -7,6 +7,7 @@ export type Employee = {
   firstName: string;
   lastName: string;
   salary: number;
+  updatedAt: string
 }
 
 const EmployeeRow: React.FC<{employee: Employee, 
@@ -17,9 +18,8 @@ const EmployeeRow: React.FC<{employee: Employee,
     const [employeeForm, setEmployeeForm] = useState(employee);
     const [hasTouched, setHasTouched] = useState(false);
 
-    // Reset state whenever employee prop changes
+    // Reset state whenever employee id prop changes
     useEffect(() => {
-
       // On new creations id is null
       if(employee.id){
         setEditMode(false);
@@ -29,7 +29,14 @@ const EmployeeRow: React.FC<{employee: Employee,
       }
       
       setEmployeeForm(employee);
-    }, [employee]);
+    }, [employee.id]);
+
+
+    useEffect(() => {
+      if(!isUpdating){
+        setEditMode(false);
+      }      
+    }, [isUpdating]);
 
 
     const onEdit = () => {
@@ -91,9 +98,9 @@ const EmployeeRow: React.FC<{employee: Employee,
     }
     else return (
         <tr key={employee.id} className="align-middle">
-          <td style={{maxWidth: '2rem'}}>{employee.firstName}</td>
-          <td style={{maxWidth: '2rem'}}>{employee.lastName}</td>
-          <td style={{maxWidth: '2rem'}}>${employee.salary}</td>
+          <td style={{maxWidth: '2rem'}}>{employeeForm.firstName}</td>
+          <td style={{maxWidth: '2rem'}}>{employeeForm.lastName}</td>
+          <td style={{maxWidth: '2rem'}}>${employeeForm.salary}</td>
           <td style={{minWidth: '4.5rem'}}>
             <button type="button" className="btn btn-outline-info mt-1" onClick={onEdit}>Edit</button>&nbsp;
             <button type="button" className="btn btn-outline-danger mt-1" disabled={isUpdating} onClick={onDelete}>Delete</button>

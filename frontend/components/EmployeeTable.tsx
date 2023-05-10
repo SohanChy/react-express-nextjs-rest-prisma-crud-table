@@ -33,8 +33,6 @@ const EmployeeTable: React.FC<Props> = ({initialEmployeeList}) => {
           const createdEmployee = await employeeApi.createEmployee(employeeFormData);
           dispatch({ type: ActionType.Create, payload: createdEmployee });
         }
-
-        
       } catch (error) {
         // dispatch();
       }

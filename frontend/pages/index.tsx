@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import EmployeeTable from '../components/EmployeeTable'
 import { GetServerSideProps } from 'next';
 import { Employee } from '../components/EmployeeRow';
+import { EmployeeApi } from '../api/employee';
 
 type Props = {
   employeeList: Employee[]
@@ -29,24 +30,11 @@ const Home : React.FC<Props> = props => {
 
 // This allows us to render the table on the server side 
 export const getServerSideProps: GetServerSideProps = async () => {
-  // const res = await fetch('http://localhost:3001/feed')
-  // const feed = await res.json()
-
-  const mockEmployeeList = [
-    {  id: 1,
-      firstName: "John",
-      lastName: "Smith",
-      salary: 5400,
-    },
-    {  id: 2,
-      firstName: "Jenna",
-      lastName: "Smith",
-      salary: 1400,
-    }
-  ];
-
+  const employeeApi = new EmployeeApi();
+  const employeeList = await employeeApi.getListOfEmployees()
+  
   return {
-    props: { employeeList: mockEmployeeList},
+    props: { employeeList: employeeList},
   }
 }
 

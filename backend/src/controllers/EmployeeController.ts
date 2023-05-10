@@ -47,7 +47,7 @@ export class EmployeeController {
 
     }
 
-    private static validateEmployee(next: NextFunction, firstName: string, lastName: string, salary: string){
+    private static validateEmployee(next: NextFunction, firstName: string, lastName: string, salary: number){
         if (!firstName || typeof firstName !== "string") {
             return next(new ValidationError("Invalid first name"));
         }
@@ -56,7 +56,7 @@ export class EmployeeController {
             return next(new ValidationError("Invalid last name"));
         }
 
-        if (!salary || typeof salary !== "number") {
+        if (!Number.isInteger(Number(salary))) {
             return next(new ValidationError("Invalid salary, must be a number"));
         }
 
@@ -65,18 +65,22 @@ export class EmployeeController {
 
     public static async create(req: Request, res: Response, next: NextFunction): Promise<void> {
 
-        const { firstName, lastName, salary } = req.body;
+        let { firstName, lastName, salary } = req.body;
 
-        const validated = EmployeeController.validateEmployee(next, firstName, lastName, salary);
+        // Some clients might send integer as string (eg. axios)
+        const parsedSalary = parseInt(salary);
+        const validated = EmployeeController.validateEmployee(next, firstName, lastName, parsedSalary);
         if(validated !== true){
             return validated;
         }
+        
 
         // All errors handled by middleware
         try{
             const employee = await EmployeeController.prismaClient.employee.create({
                     data: {
                       ...req.body,
+                      salary: parsedSalary
                     },
                   })
 
@@ -92,7 +96,9 @@ export class EmployeeController {
 
         const { firstName, lastName, salary } = req.body;
 
-        const validated = EmployeeController.validateEmployee(next, firstName, lastName, salary);
+        // Some clients might send integer as string (eg. axios)
+        const parsedSalary = parseInt(salary);
+        const validated = EmployeeController.validateEmployee(next, firstName, lastName, parsedSalary);
         if(validated !== true){
             return validated;
         }
@@ -108,6 +114,7 @@ export class EmployeeController {
                     where: { id: Number(id) },
                     data: {
                       ...req.body,
+                      salary: parsedSalary
                     },
                   })
 
