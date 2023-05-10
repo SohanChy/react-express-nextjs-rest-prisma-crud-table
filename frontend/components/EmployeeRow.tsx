@@ -33,7 +33,7 @@ const EmployeeRow: React.FC<{employee: Employee,
 
 
     useEffect(() => {
-      if(!isUpdating){
+      if(!isUpdating && employee.id){
         setEditMode(false);
       }      
     }, [isUpdating]);
@@ -51,7 +51,6 @@ const EmployeeRow: React.FC<{employee: Employee,
       }
         
     }
-    
 
     // TODO: Must add confirmation dialog
     const onDelete = () => {
@@ -100,7 +99,14 @@ const EmployeeRow: React.FC<{employee: Employee,
         <tr key={employee.id} className="align-middle">
           <td style={{maxWidth: '2rem'}}>{employeeForm.firstName}</td>
           <td style={{maxWidth: '2rem'}}>{employeeForm.lastName}</td>
-          <td style={{maxWidth: '2rem'}}>${employeeForm.salary}</td>
+          <td style={{maxWidth: '2rem'}}>{employeeForm.salary
+          .toLocaleString(
+            'en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+          })}</td>
           <td style={{minWidth: '4.5rem'}}>
             <button type="button" className="btn btn-outline-info mt-1" onClick={onEdit}>Edit</button>&nbsp;
             <button type="button" className="btn btn-outline-danger mt-1" disabled={isUpdating} onClick={onDelete}>Delete</button>

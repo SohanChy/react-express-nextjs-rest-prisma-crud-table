@@ -38,9 +38,11 @@ export class EmployeeApi {
 
   async createEmployee(employeeFormData: Employee) {
       try {
-        // The way the ui is made, id comes as null here
+        // The way the ui is made, id and updatedAt comes as null here
         // We Remove this null before sending to server
         delete employeeFormData.id;
+        delete employeeFormData.updatedAt
+
         const response: AxiosResponse<ResponseData> = await axios.post(
           `${API_URL}/employees/`, employeeFormData, config);
         if (response.data.success) {
@@ -57,6 +59,8 @@ export class EmployeeApi {
 
   async updateEmployee(employee: Employee): Promise<Employee> {
     try {
+      // We do not want to send this to the server
+      delete employee.updatedAt
       const response = await axios.put(`${API_URL}/employees/${employee.id}`, employee, config);
       return response.data;
     } catch (error) {

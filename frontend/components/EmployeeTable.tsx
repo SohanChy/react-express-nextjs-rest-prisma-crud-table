@@ -82,7 +82,7 @@ const EmployeeTable: React.FC<Props> = ({initialEmployeeList}) => {
       </thead>
       <tbody>
         {creatingEmployee?
-        <EmployeeRow employee= {{firstName:"",lastName:"",salary:0,id:null}}
+        <EmployeeRow employee= {{firstName:"",lastName:"",salary:0,id:null, updatedAt:""}}
           updateEmployee={updateEmployee} deleteEmployee={null}
           onCreateCancel={onCreateCancel}
           isUpdating={false}/> 

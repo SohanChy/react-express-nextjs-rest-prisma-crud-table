@@ -37,6 +37,9 @@ export class EmployeeController {
             const employees = await EmployeeController.prismaClient.employee.findMany({
                 skip: (pageNum - 1) * limit,
                 take: limit,
+                orderBy: {
+                    id: 'asc',
+                  },
             })    
 
             res.status(200).json({ success: true, data: employees });
@@ -79,8 +82,7 @@ export class EmployeeController {
         try{
             const employee = await EmployeeController.prismaClient.employee.create({
                     data: {
-                      ...req.body,
-                      salary: parsedSalary
+                        firstName, lastName, salary: parsedSalary
                     },
                   })
 
@@ -113,7 +115,7 @@ export class EmployeeController {
             const employee = await EmployeeController.prismaClient.employee.update({
                     where: { id: Number(id) },
                     data: {
-                      ...req.body,
+                      firstName, lastName,
                       salary: parsedSalary
                     },
                   })

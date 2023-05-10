@@ -11,8 +11,8 @@ const Header: React.FC = () => {
     
     <nav className="navbar navbar-light" style={{backgroundColor: "#e3f2fd"}}>
       <div className="container">
-        <a className="navbar-brand" href="#">
-          <h2>Nav Header</h2>
+        <a className="navbar-brand" href="sohanchy.com">
+          <h2>Fullstack CRUD Demo</h2>
         </a>
       </div>
     </nav>

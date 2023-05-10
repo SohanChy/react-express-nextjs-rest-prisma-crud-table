@@ -22,8 +22,8 @@ EXPOSE 3001
 
 RUN npx prisma generate
 
-RUN npx prisma migrate dev
-
+# Reset and remigrate the database non-interactively
+RUN npx prisma migrate reset --force
 
 # Start the application
 CMD [ "npm", "run", "dev" ]
