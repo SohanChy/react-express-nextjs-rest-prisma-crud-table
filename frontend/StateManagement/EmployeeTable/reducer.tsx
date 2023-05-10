@@ -1,3 +1,4 @@
+import { act } from 'react-dom/test-utils';
 import { Employee } from '../../components/EmployeeRow';
 import {ActionType, Action} from './actions'
 type State = {
@@ -6,6 +7,9 @@ type State = {
   
 export const EmployeeTableReducer = (state: State, action: Action): State => {
     switch (action.type) {
+      case ActionType.Create:
+        return {...state, employeeList: [...state.employeeList, action.payload]};
+
       case ActionType.Update:
         return {...state, employeeList: state.employeeList.map((employee: Employee) => {
           if (employee.id === action.payload.id) {

@@ -16,6 +16,7 @@ const EmployeeTable: React.FC<Props> = ({initialEmployeeList}) => {
     );
 
     const [updatingEmployeeId, setUpdatingEmployeeId] = useState<number>(null);
+    const [creatingEmployee, setCreatingEmployee] = useState<boolean>(false);
   
 
   // This should be extracted to actions
@@ -24,13 +25,22 @@ const EmployeeTable: React.FC<Props> = ({initialEmployeeList}) => {
       try {
         const employeeApi = new EmployeeApi();
         
-        const updatedEmployee = await employeeApi.updateEmployee(employeeFormData);
-        dispatch({ type: ActionType.Update, payload: updatedEmployee });
+        if(employeeFormData.id){
+          const updatedEmployee = await employeeApi.updateEmployee(employeeFormData);
+          dispatch({ type: ActionType.Update, payload: updatedEmployee });
+        }
+        else {
+          const createdEmployee = await employeeApi.createEmployee(employeeFormData);
+          dispatch({ type: ActionType.Create, payload: createdEmployee });
+        }
+
+        
       } catch (error) {
         // dispatch();
       }
       finally {
         setUpdatingEmployeeId(null);
+        setCreatingEmployee(false);
       }
   }
 
@@ -50,19 +60,36 @@ const EmployeeTable: React.FC<Props> = ({initialEmployeeList}) => {
     finally {
       setUpdatingEmployeeId(null);
     }
-}
+  }
+
+  const onAddEmployee = () => {
+    setCreatingEmployee(true);
+  }
+
+  const onCreateCancel = () => {
+    setCreatingEmployee(false)
+  }
 
   return (
     <table className="table table-hover">
       <thead>
-        <tr>
+        <tr className="align-middle">
           <th scope="col">First Name</th>
           <th scope="col">Last Name</th>
           <th scope="col">Salary</th>
-          <th scope="col"></th>
+          <th scope="col">
+          <button type="button" className="btn btn-outline-success mt-1" onClick={onAddEmployee}>Add Employee</button>&nbsp;
+          </th>
         </tr>
       </thead>
       <tbody>
+        {creatingEmployee?
+        <EmployeeRow employee= {{firstName:"",lastName:"",salary:0,id:null}}
+          updateEmployee={updateEmployee} deleteEmployee={null}
+          onCreateCancel={onCreateCancel}
+          isUpdating={false}/> 
+          : <></>
+        }
         {state.employeeList.map((employee)=>(
           <EmployeeRow key={employee.id} employee={employee} 
           updateEmployee={updateEmployee} deleteEmployee={deleteEmployee}

@@ -4,6 +4,11 @@ import { Employee } from '../components/EmployeeRow';
 const API_URL = 'https://localhost:3001';
 
 export class EmployeeApi {
+  createEmployee(employeeFormData: Employee) {
+    employeeFormData.id = 999999;
+    return employeeFormData;
+  }
+
   async updateEmployee(employee: Employee): Promise<Employee> {
     return employee;
     

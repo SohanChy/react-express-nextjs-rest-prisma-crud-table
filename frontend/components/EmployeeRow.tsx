@@ -10,8 +10,8 @@ export type Employee = {
 }
 
 const EmployeeRow: React.FC<{employee: Employee, 
-  isUpdating: boolean, updateEmployee, deleteEmployee}> = 
-  ({ employee, isUpdating, updateEmployee, deleteEmployee}) => {
+  isUpdating: boolean, updateEmployee, deleteEmployee, onCreateCancel?}> = 
+  ({ employee, isUpdating, updateEmployee, deleteEmployee, onCreateCancel}) => {
 
     const [isEditMode, setEditMode] = useState(false);
     const [employeeForm, setEmployeeForm] = useState(employee);
@@ -19,7 +19,15 @@ const EmployeeRow: React.FC<{employee: Employee,
 
     // Reset state whenever employee prop changes
     useEffect(() => {
-      setEditMode(false);
+
+      // On new creations id is null
+      if(employee.id){
+        setEditMode(false);
+      }
+      else {
+        setEditMode(true);
+      }
+      
       setEmployeeForm(employee);
     }, [employee]);
 
@@ -28,9 +36,17 @@ const EmployeeRow: React.FC<{employee: Employee,
         setEditMode(true);
     }
     const onCancel = () => {
+      if(employee.id){
         setEditMode(false);
+      }
+      else {
+        onCreateCancel();
+      }
+        
     }
     
+
+    // TODO: Must add confirmation dialog
     const onDelete = () => {
       deleteEmployee(employee);
     }
