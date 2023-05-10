@@ -24,11 +24,11 @@ export class EmployeeController {
         }
         
         if (!Number.isInteger(Number(pageNum)) || !Number.isInteger(Number(limit))) {
-            next(new ValidationError("pageNum & limit must be integer"));
+            return next(new ValidationError("pageNum & limit must be integer"));
         }
 
         if (pageNum < 1 || limit < 1) {
-            next(new ValidationError("pageNum & limit must be greater than 1"));
+            return next(new ValidationError("pageNum & limit must be greater than 1"));
         }
 
 
@@ -39,7 +39,41 @@ export class EmployeeController {
                 take: limit,
             })    
 
-            res.status(200).json({ success: true, employees });
+            res.status(200).json({ success: true, data: employees });
+        }
+        catch (err: unknown){
+            return next(err);
+        }
+
+    }
+
+    public static async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+        const { firstName, lastName, salary } = req.body;
+
+        if (!firstName || typeof firstName !== "string") {
+            return next(new ValidationError("Invalid first name"));
+        }
+
+        if (!lastName || typeof lastName !== "string") {
+            return next(new ValidationError("Invalid last name"));
+        }
+
+
+        if (!salary || typeof salary !== "number") {
+            return next(new ValidationError("Invalid salary, must be a number"));
+        }
+
+
+        // All errors handled by middleware
+        try{
+            const employee = await EmployeeController.prismaClient.employee.create({
+                    data: {
+                      ...req.body,
+                    },
+                  })
+
+            res.status(201).json({ success: true, data: employee });
         }
         catch (err: unknown){
             next(err);
