@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // provider = "postgresql"
+  // url      = "postgresql://myuser:mypassword@db:5432/mydb"
+
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+
+model Employee {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  firstName     String
+  lastName   String
+  salary Int @default(0)
+}
