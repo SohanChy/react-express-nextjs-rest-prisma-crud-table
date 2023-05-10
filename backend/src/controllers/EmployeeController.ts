@@ -119,4 +119,24 @@ export class EmployeeController {
 
     }
 
+    public static async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const id = parseInt(req.params.id as string, 10);
+        if (!Number.isInteger(Number(id))) {
+            return next(new ValidationError("id must be an integer"));
+        }
+
+        // All errors handled by middleware
+        try{
+            await EmployeeController.prismaClient.employee.delete({
+                    where: { id: Number(id) },
+                  })
+
+            res.status(200).json({ success: true, message: `Deleted id: ${id}` });
+        }
+        catch (err: unknown){
+            next(err);
+        }
+
+    }
+
 }
