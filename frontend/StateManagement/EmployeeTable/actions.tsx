@@ -1,4 +1,4 @@
-import { EmployeeProps } from "../../components/EmployeeRow";
+import { Employee } from "../../components/EmployeeRow";
 
 export enum ActionType {
     Update = 'UPDATE',
@@ -7,12 +7,12 @@ export enum ActionType {
   
 interface UpdateAction {
     type: ActionType.Update;
-    payload: EmployeeProps;
+    payload: Employee;
 }
 
 interface DeleteAction {
     type: ActionType.Delete;
-    payload: number;
+    payload: Employee;
 }
 
 export type Action = UpdateAction | DeleteAction;
