@@ -70,10 +70,8 @@ export class EmployeeApi {
 
 
   async deleteEmployee(employee: Employee): Promise<boolean> {
-    return true;
-    
     try {
-      const response = await axios.put(`${API_URL}/employee/${employee.id}`, employee);
+      const response = await axios.delete(`${API_URL}/employees/${employee.id}`);
       return response.data;
     } catch (error) {
       throw new Error(error.response.data.message);
