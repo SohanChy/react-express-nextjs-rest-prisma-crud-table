@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:3001
+    ports:
+      - '3000:3000'
+    networks:
+      - app-network
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    environment:
+      - DATABASE_URL=postgresql://myuser:mypassword@db:5432/mydb
+    ports:
+      - '3001:3001'
+    # depends_on:
+    #   - db
+    networks:
+      - app-network
+  # db:
+  #   image: postgres
+  #   environment:
+  #     - POSTGRES_USER=myuser
+  #     - POSTGRES_PASSWORD=mypassword
+  #     - POSTGRES_DB=mydb
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+  #   networks:
+  #     - app-network
+  #   ports:
+  #   - '5432:5432'
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:
