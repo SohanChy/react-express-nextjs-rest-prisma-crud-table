@@ -1,23 +1,14 @@
 import { PrismaClient } from '@prisma/client'
 import cors from 'cors'
 import express from 'express'
+import v1Router from './v1Routes';
 
-const prisma = new PrismaClient()
 const app = express()
 
 app.use(express.json())
 app.use(cors())
 
-
-const router = express.Router()
-
-
-router.get('/employees', async (req, res) => {
-  res.json("Hello world");
-})
-
-
-app.use('/api/v1/', router);
+app.use('/api/v1/', v1Router);
 
 const server = app.listen(3001, () =>
   console.log(
