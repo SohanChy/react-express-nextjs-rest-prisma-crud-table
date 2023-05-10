@@ -1,0 +1,9 @@
+-- CreateTable
+CREATE TABLE "Employee" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
+    "salary" BIGINT NOT NULL DEFAULT 0
+);
