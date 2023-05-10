@@ -47,10 +47,7 @@ export class EmployeeController {
 
     }
 
-    public static async create(req: Request, res: Response, next: NextFunction): Promise<void> {
-
-        const { firstName, lastName, salary } = req.body;
-
+    private static validateEmployee(next: NextFunction, firstName: string, lastName: string, salary: string){
         if (!firstName || typeof firstName !== "string") {
             return next(new ValidationError("Invalid first name"));
         }
@@ -59,11 +56,21 @@ export class EmployeeController {
             return next(new ValidationError("Invalid last name"));
         }
 
-
         if (!salary || typeof salary !== "number") {
             return next(new ValidationError("Invalid salary, must be a number"));
         }
 
+        return true;
+    }
+
+    public static async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+        const { firstName, lastName, salary } = req.body;
+
+        const validated = EmployeeController.validateEmployee(next, firstName, lastName, salary);
+        if(validated !== true){
+            return validated;
+        }
 
         // All errors handled by middleware
         try{
@@ -74,6 +81,37 @@ export class EmployeeController {
                   })
 
             res.status(201).json({ success: true, data: employee });
+        }
+        catch (err: unknown){
+            next(err);
+        }
+
+    }
+
+    public static async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+        const { firstName, lastName, salary } = req.body;
+
+        const validated = EmployeeController.validateEmployee(next, firstName, lastName, salary);
+        if(validated !== true){
+            return validated;
+        }
+
+        const id = parseInt(req.params.id as string, 10);
+        if (!Number.isInteger(Number(id))) {
+            return next(new ValidationError("id must be an integer"));
+        }
+
+        // All errors handled by middleware
+        try{
+            const employee = await EmployeeController.prismaClient.employee.update({
+                    where: { id: Number(id) },
+                    data: {
+                      ...req.body,
+                    },
+                  })
+
+            res.status(200).json({ success: true, data: employee });
         }
         catch (err: unknown){
             next(err);
